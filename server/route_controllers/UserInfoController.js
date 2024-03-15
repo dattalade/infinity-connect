@@ -40,7 +40,9 @@ const makeChange = (timestamp) => {
     }
   }
   let str = ""
-  str + send.getMonth() + " " + send.getDate() + ", " + send.getFullYear();
+  if (send.getDate() <= 9)
+    str = str + send.getMonth() + " 0" + send.getDate() + ", " + send.getFullYear();
+  str = str + send.getMonth() + " " + send.getDate() + ", " + send.getFullYear();
   return str;
 }
 

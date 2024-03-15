@@ -32,6 +32,31 @@ const ChatPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (new Date().getHours() === 12 && new Date().getSeconds() === 1) {
+      const getInfo = async () => {
+        await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+          .then((response) => {
+            setUserInfo(response.data)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+
+        await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
+          .then((response) => {
+            console.log(response.data)
+            if (response.data.length > 0)
+              setUserContacts(response.data)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+      }
+      getInfo();
+    }
+  })
+
   const theme = createTheme({
     typography: {
       fontFamily: [

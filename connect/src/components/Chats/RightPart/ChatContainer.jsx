@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SelectedContactHeader from './SelectedContactHeader';
 import ChatBody from './ChatBody';
-import { OrbitSpace } from 'orbit-space'
 
 const ChatContainer = (props) => {
 
