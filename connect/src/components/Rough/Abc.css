@@ -1,0 +1,25 @@
+body{
+  color: dark;
+  transition: 0.5s ease;
+  word-break: break-all;
+  background-color: rgb(2, 2, 32);
+  .text:focus{
+    outline: none;
+  }
+}
+
+.container
+{
+  @media screen and (min-width: 720px) and (max-width: 1080px) {
+    display: grid;
+    grid-template-columns: 35% 65%;
+  }
+  &::-webkit-scrollbar{
+    width: 0.2rem;
+    &-thumb{
+      background-color: #cbced3;
+      width: 0.1rem
+    }
+  }
+  align-items: flex-end;
+}
