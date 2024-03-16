@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material';
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 const WelcomePage = (props) => {
@@ -12,6 +12,15 @@ const WelcomePage = (props) => {
       ].join(','),
     },
   });
+
+  useEffect(() => {
+    if (props.socket.current) {
+      props.socket.current.on("recieve-msg", (data) => {
+        console.log("Recieved Home Page")
+        props.timeUpdated();
+      })
+    }
+  }, [props.selectedChat, props.socket, props.userInfo, props])
 
   return (
     <ThemeProvider theme={theme}>

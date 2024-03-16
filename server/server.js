@@ -32,13 +32,13 @@ io.on("connection", (socket) => {
 
   socket.on("add-user", (userId) => {
     onlineChatters.set(userId, socket.id)
+    // console.log("Socket recieved from : " + userId)
   })
 
   socket.on("send-msg", (data) => {
     const sendSocket = onlineChatters.get(data.to)
     if (sendSocket) {
-      console.log("Socket recieved")
-      socket.to(sendSocket).emit("recieve-msg", { message: data.message, time: new Date() })
+      socket.to(sendSocket).emit("recieve-msg", { message: data.message, time: new Date(), to: data.to, from: data.from, socketNeed: data.socketNeed })
     }
   })
   // console.log(socket.id)

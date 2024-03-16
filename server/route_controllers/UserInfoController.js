@@ -28,6 +28,8 @@ const userInfo = async (req, res) => {
 };
 
 const makeChange = (timestamp) => {
+  if (timestamp == "")
+    return ""
   const send = new Date(timestamp)
   if (send.getFullYear() == new Date().getFullYear()) {
     if (send.getMonth() == new Date().getMonth()) {

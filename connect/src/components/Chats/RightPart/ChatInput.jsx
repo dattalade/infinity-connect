@@ -34,7 +34,6 @@ const ChatInput = (props) => {
   };
 
   const enterKey = (e) => {
-    console.log(e.key)
     if (e.key === "Enter")
       sendChat(e)
   }

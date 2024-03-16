@@ -20,7 +20,7 @@ const sendMessage = async (req, res) => {
     await newMessage.save();
 
     const allMessages = await Message.find({ from: { $in: [from, to] }, to: { $in: [from, to] } })
-    return res.json({ status: true, store: allMessages })
+    return res.json({ status: true, store: allMessages, socketNeed: !bool })
   }
   catch (e) {
     return res.json({ status: false })

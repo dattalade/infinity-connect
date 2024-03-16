@@ -18,6 +18,7 @@ const ChatBody = (props) => {
   });
   const [messages, setMessages] = useState(undefined);
   const [arrival, setArrival] = useState(null);
+  const [socketNeed, setSocketNeed] = useState(false)
   const scrollRef = useRef();
 
   useEffect(() => {
@@ -42,19 +43,25 @@ const ChatBody = (props) => {
   useEffect(() => {
     if (props.socket.current && props.userInfo !== undefined && props.selectedChat !== undefined) {
       props.socket.current.on("recieve-msg", (data) => {
-        setArrival({ from: props.selectedChat._id, to: props.userInfo._id, message: data.message, time: data.time })
+        console.log(data.socketNeed)
+        setArrival({ from: data.from, to: data.to, message: data.message, time: data.time })
       })
     }
-  }, [props])
+  }, [props.selectedChat, props.socket, props.userInfo])
 
   useEffect(() => {
-    arrival && setMessages((prev) => [...prev, arrival])
-  }, [arrival])
+    if (arrival !== null && props.selectedChat !== undefined && props.userInfo !== undefined) {
+      if ((arrival.to === props.userInfo._id || arrival.to === props.selectedChat._id) && (arrival.from === props.userInfo._id || arrival.from === props.selectedChat._id)) {
+        setMessages((prev) => [...prev, arrival])
+      }
+    }
+  }, [arrival, props.selectedChat, props.userInfo])
 
   const sendMessage = async (message) => {
     await axios.post('http://localhost:5000/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date() })
       .then((response) => {
         setMessages(response.data.store)
+        setSocketNeed(response.data.socketNeed)
       })
       .catch((err) => {
         console.log(err.message)
@@ -63,7 +70,8 @@ const ChatBody = (props) => {
     props.socket.current.emit("send-msg", {
       from: props.userInfo._id,
       to: props.selectedChat._id,
-      message: message
+      message: message,
+      socketNeed: socketNeed,
     })
   }
 
@@ -75,10 +83,12 @@ const ChatBody = (props) => {
             <div className='chatting'>
               {messages.map((element, index) =>
                 <React.Fragment key={index}>
-                  <Data messageTime={new Date(element.time).toLocaleDateString()} presentMessage={element.message} timeStamp={new Date(element.time)} />
+                  <Data messageTime={new Date(element.time).toLocaleDateString()} presentMessage={element.message} presentMessageId={element._id} timeStamp={new Date(element.time)} />
                   <div ref={scrollRef} className={element.from === props.userInfo._id ? 'me message' : 'friend message'}>
                     <Tooltip title={new Date(element.time).toLocaleString()} placement='top'>
-                      <p className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}><span style={{ wordBreak: "break-word" }}>{element.message}</span></p>
+                      <p className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}><span style={{ wordBreak: "break-word" }}>
+                        {element.message}</span>
+                      </p>
                     </Tooltip>
                   </div>
                 </React.Fragment>
@@ -92,16 +102,16 @@ const ChatBody = (props) => {
   )
 }
 
-const Data = React.memo(({ messageTime, presentMessage, timeStamp }) => {
+const Data = React.memo(({ messageTime, presentMessage, timeStamp, presentMessageId }) => {
   if (messageTime === new Date().toLocaleDateString()) {
     if (dateMap.get("Today") === undefined) {
-      dateMap.set("Today", presentMessage)
+      dateMap.set("Today", presentMessageId)
     }
-    if (dateMap.get("Today") === presentMessage) {
+    if (dateMap.get("Today") === presentMessageId) {
       return (
         <>
           <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
-            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px"}}>Today</span>
+            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>Today</span>
           </p>
         </>
       )
@@ -117,8 +127,8 @@ const Data = React.memo(({ messageTime, presentMessage, timeStamp }) => {
     if (dateMap.get("Yesterday") === presentMessage) {
       return (
         <>
-          <p style={{ color: "white", backgroundColor: "red" }}>
-            <span>Yesterday</span>
+          <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
+            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>Yesterday</span>
           </p>
         </>
       )
@@ -135,8 +145,8 @@ const Data = React.memo(({ messageTime, presentMessage, timeStamp }) => {
     if (dateMap.get(str) === presentMessage) {
       return (
         <>
-          <p style={{ color: "white", backgroundColor: "red" }}>
-            <span>{str}</span>
+          <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
+            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>{str}</span>
           </p>
         </>
       )

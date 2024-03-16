@@ -33,29 +33,24 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    if (new Date().getHours() === 12 && new Date().getSeconds() === 1) {
-      const getInfo = async () => {
-        await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
-          .then((response) => {
-            setUserInfo(response.data)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-
-        await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
-          .then((response) => {
-            console.log(response.data)
-            if (response.data.length > 0)
-              setUserContacts(response.data)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
+    const intervalId = setInterval(() => {
+      const currentDate = new Date();
+      if (currentDate.getHours() === 0 && currentDate.getMinutes() === 0 && currentDate.getSeconds() === 1) {
+        const getInfo = async () => {
+          await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+            .then((response) => {
+              setUserInfo(response.data)
+            })
+            .catch((err) => {
+              console.log(err.message)
+            })
+        }
+        getInfo();
       }
-      getInfo();
-    }
-  })
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const theme = createTheme({
     typography: {
@@ -90,7 +85,6 @@ const ChatPage = () => {
 
       await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
         .then((response) => {
-          console.log(response.data)
           if (response.data.length > 0)
             setUserContacts(response.data)
         })
@@ -136,11 +130,11 @@ const ChatPage = () => {
                   </div>
                   <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
-                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} currentChat={selectedChat} />
+                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} currentChat={selectedChat} socket={socket} />
                 <UserDetails userInfo={userInfo} />
               </div>
               <div className='right-part'>
-                {selectedChat === undefined && <WelcomePage userInfo={userInfo} />}
+                {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
                 {selectedChat && <ChatContainer userInfo={userInfo} currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />}
               </div>
             </React.Fragment>

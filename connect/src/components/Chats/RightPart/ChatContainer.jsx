@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SelectedContactHeader from './SelectedContactHeader';
 import ChatBody from './ChatBody';
+import SPChatInfo from '../SPChatInfo';
 
 const ChatContainer = (props) => {
 
@@ -35,12 +36,12 @@ const ChatContainer = (props) => {
             <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} />
             <Drawer
               anchor="right"
-              open={open} style={{ width: "100%", }}
+              PaperProps={{style: {minWidth: "50%"}}}
+              className='drawer'
+              open={open}
               onClose={() => openClose(false)}
             >
-              <div style={{ width: "100%", height: "100%", backgroundColor: "whitesmoke" }}>
-                <h1 style={{ fontFamily: 'Josefin Sans, sans-serif' }}>Da</h1>
-              </div>
+              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} />
             </Drawer>
           </Container>
         }
