@@ -5,6 +5,8 @@ import SelectedContactHeader from './SelectedContactHeader';
 import ChatBody from './ChatBody';
 import SPChatInfo from '../SPChatInfo';
 
+const backgroundLink = 'https://images7.alphacoders.com/736/736462.png';
+
 const ChatContainer = (props) => {
 
   const [selectedChat, setSelectedChat] = useState(undefined)
@@ -26,24 +28,33 @@ const ChatContainer = (props) => {
   const openClose = (value) => {
     setOpen(value);
   }
-
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
         {props.userInfo && props.currentChat && props.socket &&
-          <Container>
-            <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} />
-            <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} />
+          <React.Fragment>
+            <Container>
+              <div className='hello'>
+                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} />
+                <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} />
+              </div>
+            </Container>
             <Drawer
-              anchor="right"
-              PaperProps={{style: {minWidth: "50%"}}}
+              anchor="right" transitionDuration={{ enter: 750, exit: 750 }}
+              PaperProps={{
+                style: {
+                  minWidth: "100%", display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                  alignItems: "center", justifyContent: "center"
+                }
+              }}
               className='drawer'
               open={open}
               onClose={() => openClose(false)}
             >
-              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} />
+              <div style={{ width: "60%", height: "100%" }} onClick={() => { openClose(false) }}></div>
+              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} openClose={openClose} />
             </Drawer>
-          </Container>
+          </React.Fragment>
         }
       </ThemeProvider>
     </React.Fragment>
@@ -51,11 +62,23 @@ const ChatContainer = (props) => {
 }
 
 const Container = styled.div`
+  *{
+    padding: 0;
+    margin: 0;
+  }
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  .hello{
+    width: 100%;
+    height: 100%;
+    background: url(${backgroundLink}) no-repeat;
+    background-size: cover;
+    background-clip: border-box;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 `
 
 export default ChatContainer

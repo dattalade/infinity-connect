@@ -3,6 +3,7 @@ const Message = require('../route_models/MessageData')
 const jwt = require('jsonwebtoken')
 
 const SECRET_KEY = 'connect-chat@9959750297'
+const months = { 1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December" }
 
 const userInfo = async (req, res) => {
   try {
@@ -34,7 +35,7 @@ const makeChange = (timestamp) => {
   if (send.getFullYear() == new Date().getFullYear()) {
     if (send.getMonth() == new Date().getMonth()) {
       if (send.getDate() == new Date().getDate()) {
-        return send.getHours() + ":" + send.getMinutes();
+        return send.getHours() + ":" + (send.getMinutes()<=9?"0"+send.getMinutes():send.getMinutes());
       }
       else if (send.getDate() + 1 == new Date().getDate()) {
         return "Yesterday"
@@ -43,8 +44,8 @@ const makeChange = (timestamp) => {
   }
   let str = ""
   if (send.getDate() <= 9)
-    str = str + send.getMonth() + " 0" + send.getDate() + ", " + send.getFullYear();
-  str = str + send.getMonth() + " " + send.getDate() + ", " + send.getFullYear();
+    str = str + months[send.getMonth()+1] + " 0" + send.getDate() + ", " + send.getFullYear();
+  str = str + months[send.getMonth()+1] + " " + send.getDate() + ", " + send.getFullYear();
   return str;
 }
 

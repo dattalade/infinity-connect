@@ -70,7 +70,7 @@ const ChatInput = (props) => {
 }
 
 const Input = styled.div`
-  height: 7%;
+  height: 8%;
   width: 100%;
   display: flex;
   justify-content: end;
@@ -83,11 +83,11 @@ const Input = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #0d2b6e;
+    // background-color: #0d2b6e;
     align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 12.5px;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    border-radius: 0.5rem;
   }
   .text-message::placeholder{
     font-family: 'Josefin Sans', sans-serif;

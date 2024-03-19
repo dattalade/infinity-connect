@@ -2,6 +2,25 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ThemeProvider, createTheme } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import LinearProgress from '@mui/material/LinearProgress';
+
+const NoContact = ({ socket, timeUpdated }) => {
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("recieve-msg", (data) => {
+        console.log("Recieved NoContact Page")
+        timeUpdated();
+      })
+    }
+  }, [socket, timeUpdated])
+  return (
+    <div>
+      <h2 style={{ fontWeight: "300" }}>No Chats Available</h2>
+    </div>
+  )
+}
+
+const backgroundLink = 'https://images7.alphacoders.com/736/736462.png';
 
 const Contacts = (props) => {
 
@@ -13,7 +32,7 @@ const Contacts = (props) => {
     setUserInfo(props.userInfo);
     setUserContacts(props.userContacts);
     setSelectedChat(props.currentChat);
-  }, [props])
+  }, [props.userInfo, props.currentChat, props.userContacts])
 
   const theme = createTheme({
     typography: {
@@ -23,16 +42,22 @@ const Contacts = (props) => {
       ].join(','),
     },
   });
-
+  console.log(props.userContacts)
   return (
     <ThemeProvider theme={theme}>
-      <UserContacts style={{ height: "70%" }}>
-        {userInfo &&
+      {props.userContacts === undefined &&
+        <Loading>
+          <div style={{padding: "10%", width: "100%", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "center", gap: "0.5rem"}}>
+            <h3>Loading your contacts</h3>
+            <LinearProgress style={{ width: "100%", backgroundColor: "darkslateblue" }} />
+          </div>
+        </Loading>
+      }
+      {userInfo && userContacts &&
+        <UserContacts style={{ height: "70%" }}>
           <div className={userInfo.userContacts.length === 0 ? "empty-page" : "all-contacts"}>
             {userInfo.userContacts.length === 0 &&
-              <div>
-                <h2 style={{ fontWeight: "300" }}>No Chats Available</h2>
-              </div>
+              <NoContact socket={props.socket} timeUpdated={props.timeUpdated} />
             }
             {userInfo.userContacts.length !== 0 && userContacts &&
               <React.Fragment>
@@ -57,8 +82,9 @@ const Contacts = (props) => {
               </React.Fragment>
             }
           </div>
-        }
-      </UserContacts>
+
+        </UserContacts>
+      }
       <hr style={{ borderColor: "darkslateblue" }} />
     </ThemeProvider>
   )
@@ -97,6 +123,7 @@ const UserContacts = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 500;
+    font-size: 0.9rem;
   }
 
   .avatar-name{
@@ -117,22 +144,27 @@ const UserContacts = styled.div`
 
   .contact{
     background-color: #ffffff39;
-    height: 60px;
+    height: 55px;
     padding: 5px;
-    padding-left: 7px;
-    padding-right: 7px;
+    padding-left: 0.7rem;
+    padding-right: 0.3rem;
+    padding-top: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 90%;
-    border-radius: 15px;
-    transition: 0.5s ease-in-out;
+    border-radius: 0.5rem;
+    transition: 0.35s ease-in-out;
     cursor: pointer;
     margin-bottom: 20px;
   }
 
   .selected{
-    background-color: #0d2b6e;
+    // background-color: #0d2b6e;
+    background: url(${backgroundLink}) no-repeat;
+    background-size: cover;
+    background-clip: border-box;
+    background-position: center;
   }
 
   .hover-item:hover{
@@ -166,6 +198,14 @@ const UserContacts = styled.div`
     font-size: 12px;
     color: white;
   }
+`
+const Loading = styled.div`
+  height: 70%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 `
 
 export default Contacts

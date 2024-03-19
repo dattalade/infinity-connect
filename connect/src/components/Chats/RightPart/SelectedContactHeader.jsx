@@ -2,6 +2,7 @@ import React from 'react'
 import { ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import styled from 'styled-components';
 import PersonIcon from '@mui/icons-material/Person';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import CallIcon from '@mui/icons-material/Call';
 import DuoIcon from '@mui/icons-material/Duo';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,12 +16,18 @@ const SelectedContactHeader = (props) => {
       ].join(','),
     },
   });
+
   return (
     <ThemeProvider theme={theme}>
       {props.selectedChat &&
         <Header>
           <div className='header-details'>
             <div className='avatar-name'>
+              <Tooltip title="Close chat" placement='top'>
+                <div className='hover-item' onClick={() => props.changeChat(undefined)}>
+                  <ArrowBackIosNewIcon fontSize='small' />
+                </div>
+              </Tooltip>
               {props.selectedChat.userAvatar === "" &&
                 <div className='avatar'>
                   <PersonIcon fontSize='medium' className='empty-photo' />
@@ -59,20 +66,18 @@ const Header = styled.div`
   width: 100%;
   height: 8%;
   display: flex;
-  justify-content: end;  
+  justify-content: end;
   .hover-item{
     cursor: pointer;
   }
   .header-details{
     height: 100%;
-    width: 97%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    background-color: #0d2b6e;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 12.5px;
   }
   .empty-photo{
     background-color: grey;

@@ -41,5 +41,4 @@ io.on("connection", (socket) => {
       socket.to(sendSocket).emit("recieve-msg", { message: data.message, time: new Date(), to: data.to, from: data.from, socketNeed: data.socketNeed })
     }
   })
-  // console.log(socket.id)
 })

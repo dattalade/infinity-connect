@@ -4,10 +4,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
 
-const dateMap = new Map();
+var dateMap = new Map();
 const months = { 1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December" }
 
 const ChatBody = (props) => {
+  dateMap = new Map();
   const theme = createTheme({
     typography: {
       fontFamily: [
@@ -43,11 +44,12 @@ const ChatBody = (props) => {
   useEffect(() => {
     if (props.socket.current && props.userInfo !== undefined && props.selectedChat !== undefined) {
       props.socket.current.on("recieve-msg", (data) => {
-        console.log(data.socketNeed)
+        console.log("From body recieved")
         setArrival({ from: data.from, to: data.to, message: data.message, time: data.time })
+        props.timeUpdated()
       })
     }
-  }, [props.selectedChat, props.socket, props.userInfo])
+  }, [props.selectedChat, props.socket, props.userInfo, props])
 
   useEffect(() => {
     if (arrival !== null && props.selectedChat !== undefined && props.userInfo !== undefined) {
@@ -55,7 +57,7 @@ const ChatBody = (props) => {
         setMessages((prev) => [...prev, arrival])
       }
     }
-  }, [arrival, props.selectedChat, props.userInfo])
+  }, [arrival, props.selectedChat, props.userInfo,])
 
   const sendMessage = async (message) => {
     await axios.post('http://localhost:5000/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date() })
@@ -83,7 +85,7 @@ const ChatBody = (props) => {
             <div className='chatting'>
               {messages.map((element, index) =>
                 <React.Fragment key={index}>
-                  <Data messageTime={new Date(element.time).toLocaleDateString()} presentMessage={element.message} presentMessageId={element._id} timeStamp={new Date(element.time)} />
+                  <Data messageTime={new Date(element.time).toLocaleDateString()} presentMessageId={element._id} timeStamp={new Date(element.time)} />
                   <div ref={scrollRef} className={element.from === props.userInfo._id ? 'me message' : 'friend message'}>
                     <Tooltip title={new Date(element.time).toLocaleString()} placement='top'>
                       <p className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}><span style={{ wordBreak: "break-word" }}>
@@ -102,7 +104,7 @@ const ChatBody = (props) => {
   )
 }
 
-const Data = React.memo(({ messageTime, presentMessage, timeStamp, presentMessageId }) => {
+const Data = ({ messageTime, timeStamp, presentMessageId }) => {
   if (messageTime === new Date().toLocaleDateString()) {
     if (dateMap.get("Today") === undefined) {
       dateMap.set("Today", presentMessageId)
@@ -122,9 +124,9 @@ const Data = React.memo(({ messageTime, presentMessage, timeStamp, presentMessag
   }
   else if (timeStamp.getFullYear() === new Date().getFullYear() && timeStamp.getMonth() === new Date().getMonth() && timeStamp.getDate() + 1 === new Date().getDate()) {
     if (dateMap.get("Yesterday") === undefined) {
-      dateMap.set("Yesterday", presentMessage)
+      dateMap.set("Yesterday", presentMessageId)
     }
-    if (dateMap.get("Yesterday") === presentMessage) {
+    if (dateMap.get("Yesterday") === presentMessageId) {
       return (
         <>
           <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
@@ -140,9 +142,9 @@ const Data = React.memo(({ messageTime, presentMessage, timeStamp, presentMessag
   else {
     let str = months[timeStamp.getMonth() + 1] + " " + (timeStamp.getDate() <= 9 ? "0" + timeStamp.getDate() : timeStamp.getDate()) + ", " + timeStamp.getFullYear();
     if (dateMap.get(str) === undefined) {
-      dateMap.set(str, presentMessage)
+      dateMap.set(str, presentMessageId)
     }
-    if (dateMap.get(str) === presentMessage) {
+    if (dateMap.get(str) === presentMessageId) {
       return (
         <>
           <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
@@ -155,32 +157,29 @@ const Data = React.memo(({ messageTime, presentMessage, timeStamp, presentMessag
       return (<></>)
     }
   }
-});
+}
 
 const Messages = styled.div`
-  height: 80%;
+  height: 84%;
   width: 100%;
   display: flex;
   justify-content: end;
   .chatting{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.8rem;
     height: 96%;
     color: black;
     width: 97%;
     max-width: 97%;
-    border-radius: 12.5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-left: 1rem;
+    padding-right: 1rem;
     overflow-y: scroll;
     &::-webkit-scrollbar{
-      width: 0.2rem;
+      width: 0.1rem;
       &-thumb{
         background-color: #938e8e;
-        width: 0.2rem
+        width: 0.1rem
       }
     }
   }
@@ -204,17 +203,17 @@ const Messages = styled.div`
     display: flex;
     overflow:hidden;
     justify-content: end;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
   }
   .friend-message{
     max-width: 45%;
-    background-color: #4f04ff21;
-    color: white;
+    background-color: whitesmoke; //#4f04ff21
+    color: black;
     display: flex;
     justify-content: start;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
   }
 `
 
