@@ -6,6 +6,7 @@ body{
   .text:focus{
     outline: none;
   }
+  background-size: cover;
 }
 
 .container

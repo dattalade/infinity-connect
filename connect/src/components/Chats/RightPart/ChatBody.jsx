@@ -105,6 +105,8 @@ const ChatBody = (props) => {
 }
 
 const Data = ({ messageTime, timeStamp, presentMessageId }) => {
+  const url = 'https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg'
+
   if (messageTime === new Date().toLocaleDateString()) {
     if (dateMap.get("Today") === undefined) {
       dateMap.set("Today", presentMessageId)
@@ -112,8 +114,11 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
     if (dateMap.get("Today") === presentMessageId) {
       return (
         <>
-          <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
-            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>Today</span>
+          <p style={{ color: "black", display: "flex", justifyContent: "center" }}>
+            <span style={{
+              background: `url(${url}) no-repeat`, backgroundSize: "cover",
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+            }}>Today</span>
           </p>
         </>
       )
@@ -129,8 +134,11 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
     if (dateMap.get("Yesterday") === presentMessageId) {
       return (
         <>
-          <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
-            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>Yesterday</span>
+          <p style={{ width: "100%", color: "black", display: "flex", justifyContent: "center" }}>
+            <span style={{
+              background: `url(${url}) no-repeat`, backgroundSize: "cover",
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+            }}>Yesterday</span>
           </p>
         </>
       )
@@ -147,8 +155,11 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
     if (dateMap.get(str) === presentMessageId) {
       return (
         <>
-          <p style={{ color: "white", display: "flex", justifyContent: "center" }}>
-            <span style={{ backgroundColor: "darkgray", padding: "7.5px 15px 7.5px 15px", borderRadius: "7.5px" }}>{str}</span>
+          <p style={{ color: "black", display: "flex", justifyContent: "center" }}>
+            <span style={{
+              background: `url(${url}) no-repeat`, backgroundSize: "cover",
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+            }}>{str}</span>
           </p>
         </>
       )
@@ -203,7 +214,7 @@ const Messages = styled.div`
     display: flex;
     overflow:hidden;
     justify-content: end;
-    padding: 0.8rem;
+    padding: 0.5rem;
     border-radius: 0.5rem;
   }
   .friend-message{
@@ -212,7 +223,7 @@ const Messages = styled.div`
     color: black;
     display: flex;
     justify-content: start;
-    padding: 0.8rem;
+    padding: 0.5rem;
     border-radius: 0.5rem;
   }
 `

@@ -1,12 +1,17 @@
 const mongoose = require('mongoose')
 const { ObjectId } = require('mongodb')
 
+const contactSchema = new mongoose.Schema({
+  contactId: ObjectId,
+  contactTheme: String,
+})
+
 const userSchema = new mongoose.Schema({
   name: String,
   username: String,
   email: String,
   password: String,
-  userContacts: [ObjectId],
+  userContacts: [contactSchema],
   userAvatar: { type: String, default: "", },
   isPhoto: { type: Boolean, default: false, },
   whenRegistered: Date,

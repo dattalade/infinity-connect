@@ -7,12 +7,12 @@ import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { io } from 'socket.io-client'
-import Cookies from 'universal-cookie'
 import axios from 'axios'
 import ChatContainer from './RightPart/ChatContainer';
 import WelcomePage from './RightPart/WelcomePage';
-
+import Cookies from 'universal-cookie'
 const cookies = new Cookies();
+
 const ChatPage = () => {
   const nav = useNavigate();
   const socket = useRef();
@@ -111,13 +111,35 @@ const ChatPage = () => {
       })
     await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
       .then((response) => {
-        console.log(response.data)
         if (response.data.length > 0)
           setUserContacts(response.data)
       })
       .catch((err) => {
         console.log(err.message)
       })
+  }
+
+  const timeUpdated1 = async (selectedChat, link) => {
+    await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+      .then((response) => {
+        setUserInfo(response.data)
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
+    await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
+      .then((response) => {
+        if (response.data.length > 0)
+          setUserContacts(response.data)
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
+
+    setSelectedChat((prevState) => ({
+      ...prevState,
+      theme: link
+    }))
   }
 
   return (
@@ -146,8 +168,9 @@ const ChatPage = () => {
                 {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
                 {selectedChat &&
                   <ChatContainer userInfo={userInfo} currentChat={selectedChat} changeChat={selectChat}
-                    socket={socket} timeUpdated={timeUpdated} />
-                }              </div>
+                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} />
+                }
+              </div>
             </React.Fragment>
 
           </div>
@@ -177,7 +200,7 @@ const ChatPage = () => {
                 {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
                 {selectedChat &&
                   <ChatContainer userInfo={userInfo} currentChat={selectedChat} changeChat={selectChat}
-                    socket={socket} timeUpdated={timeUpdated} />
+                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} />
                 }
               </div>
             </React.Fragment>
@@ -209,7 +232,7 @@ const ChatPage = () => {
                 {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
                 {selectedChat &&
                   <ChatContainer userInfo={userInfo} currentChat={selectedChat} changeChat={selectChat}
-                    socket={socket} timeUpdated={timeUpdated} />
+                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} />
                 }
               </div>
             </React.Fragment>

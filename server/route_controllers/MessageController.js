@@ -5,9 +5,9 @@ const sendMessage = async (req, res) => {
   try {
     const { from, to, message, time } = req.body;
     const isAvailable = await User.findById(to);
-    const bool = isAvailable.userContacts.includes(from);
-    if (!bool) {
-      isAvailable.userContacts.push(from);
+    const bool = await isAvailable.userContacts.find((item) => JSON.stringify(item.contactId) == JSON.stringify(from));
+    if (bool == undefined) {
+      isAvailable.userContacts.push({ contactId: from, contactTheme: "" });
       await isAvailable.save();
     }
 

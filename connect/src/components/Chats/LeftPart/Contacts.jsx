@@ -20,8 +20,6 @@ const NoContact = ({ socket, timeUpdated }) => {
   )
 }
 
-const backgroundLink = 'https://images7.alphacoders.com/736/736462.png';
-
 const Contacts = (props) => {
 
   const [userInfo, setUserInfo] = useState(undefined);
@@ -42,19 +40,25 @@ const Contacts = (props) => {
       ].join(','),
     },
   });
-  console.log(props.userContacts)
+
+  // console.log(props.currentChat)
+
   return (
     <ThemeProvider theme={theme}>
-      {props.userContacts === undefined &&
-        <Loading>
-          <div style={{padding: "10%", width: "100%", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "center", gap: "0.5rem"}}>
-            <h3>Loading your contacts</h3>
-            <LinearProgress style={{ width: "100%", backgroundColor: "darkslateblue" }} />
-          </div>
-        </Loading>
+      {userInfo &&
+        <React.Fragment>
+          {userInfo.userContacts.length !== 0 && userContacts === undefined &&
+            <Loading>
+              <div style={{ padding: "10%", width: "100%", display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "center", gap: "0.5rem" }}>
+                <h3>Loading your contacts</h3>
+                <LinearProgress style={{ width: "100%", backgroundColor: "darkslateblue" }} />
+              </div>
+            </Loading>
+          }
+        </React.Fragment>
       }
-      {userInfo && userContacts &&
-        <UserContacts style={{ height: "70%" }}>
+      {userInfo !== undefined &&
+        <UserContacts style={{ height: "70%" }} selectedChat={selectedChat}>
           <div className={userInfo.userContacts.length === 0 ? "empty-page" : "all-contacts"}>
             {userInfo.userContacts.length === 0 &&
               <NoContact socket={props.socket} timeUpdated={props.timeUpdated} />
@@ -63,7 +67,9 @@ const Contacts = (props) => {
               <React.Fragment>
                 {userContacts.map((element, index) =>
                   <div key={index} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <div className={selectedChat && selectedChat._id === element._id ? "contact selected" : "contact"} onClick={() => props.changeChat(element)} >
+                    <div className={selectedChat && selectedChat._id === element._id ? "contact selected" : "contact"}
+                      onClick={() => props.changeChat(element)}
+                    >
                       <div className='avatar-name'>
                         {
                           element.userAvatar.length === 0 &&
@@ -86,7 +92,7 @@ const Contacts = (props) => {
         </UserContacts>
       }
       <hr style={{ borderColor: "darkslateblue" }} />
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 
@@ -154,17 +160,18 @@ const UserContacts = styled.div`
     justify-content: space-between;
     width: 90%;
     border-radius: 0.5rem;
-    transition: 0.35s ease-in-out;
+    transition: background-image 0.35s ease-in-out, background-repeat 0.35s ease-in-out, background-size 0.35s ease-in-out, background-clip 0.35s ease-in-out, background-position 0.35s ease-in-out;
     cursor: pointer;
     margin-bottom: 20px;
   }
 
   .selected{
-    // background-color: #0d2b6e;
-    background: url(${backgroundLink}) no-repeat;
-    background-size: cover;
-    background-clip: border-box;
-    background-position: center;
+    background-image: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `url(${props.selectedChat.theme})` : 'none'};
+    background-repeat: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `no-repeat` : 'none'};
+    background-size: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `cover` : 'none'};
+    background-clip: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `border-box` : 'none'};
+    background-position: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `center` : 'none'};
+    background-color: ${props => props.selectedChat && props.selectedChat.theme === '' ? `#0d2b6e` : 'none'};
   }
 
   .hover-item:hover{

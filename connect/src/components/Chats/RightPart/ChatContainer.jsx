@@ -5,8 +5,6 @@ import SelectedContactHeader from './SelectedContactHeader';
 import ChatBody from './ChatBody';
 import SPChatInfo from '../SPChatInfo';
 
-const backgroundLink = 'https://images7.alphacoders.com/736/736462.png';
-
 const ChatContainer = (props) => {
 
   const [selectedChat, setSelectedChat] = useState(undefined)
@@ -33,7 +31,7 @@ const ChatContainer = (props) => {
       <ThemeProvider theme={theme}>
         {props.userInfo && props.currentChat && props.socket &&
           <React.Fragment>
-            <Container>
+            <Container selectedChat={selectedChat}>
               <div className='hello'>
                 <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} />
                 <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} />
@@ -43,7 +41,7 @@ const ChatContainer = (props) => {
               anchor="right" transitionDuration={{ enter: 750, exit: 750 }}
               PaperProps={{
                 style: {
-                  minWidth: "100%", display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                  minWidth: "100%", minHeight: "100%", display: "flex", flexDirection: "row", backgroundColor: "transparent",
                   alignItems: "center", justifyContent: "center"
                 }
               }}
@@ -52,7 +50,7 @@ const ChatContainer = (props) => {
               onClose={() => openClose(false)}
             >
               <div style={{ width: "60%", height: "100%" }} onClick={() => { openClose(false) }}></div>
-              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} openClose={openClose} />
+              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} openClose={openClose} timeUpdated1={props.timeUpdated1} />
             </Drawer>
           </React.Fragment>
         }
@@ -71,13 +69,14 @@ const Container = styled.div`
   .hello{
     width: 100%;
     height: 100%;
-    background: url(${backgroundLink}) no-repeat;
-    background-size: cover;
-    background-clip: border-box;
-    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-image: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `url(${props.selectedChat.theme})` : 'none'};
+    background-repeat: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `no-repeat` : 'none'};
+    background-size: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `cover` : 'none'};
+    background-clip: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `border-box` : 'none'};
+    background-position: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `center` : 'none'};
   }
 `
 
