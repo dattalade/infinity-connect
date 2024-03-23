@@ -5,12 +5,13 @@ import UserDetails from './LeftPart/UserDetails'
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { Drawer, ThemeProvider, createTheme } from '@mui/material';
 import { io } from 'socket.io-client'
 import axios from 'axios'
 import ChatContainer from './RightPart/ChatContainer';
 import WelcomePage from './RightPart/WelcomePage';
 import Cookies from 'universal-cookie'
+import AddContact from '../AddContact';
 const cookies = new Cookies();
 
 const ChatPage = () => {
@@ -21,10 +22,14 @@ const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+      console.log(window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
     return () => {
@@ -51,6 +56,10 @@ const ChatPage = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  const openClose = (value) => {
+    setOpen(value);
+  }
 
   const theme = createTheme({
     typography: {
@@ -152,7 +161,7 @@ const ChatPage = () => {
                 <ThemeProvider theme={theme}>
                   <div className='hover-item add-contact' style={{ height: "8%" }}>
                     <h3>Add a contact</h3>
-                    <div onClick={() => nav('/addContact')}>
+                    <div onClick={() => setOpen(true)}>
                       <Tooltip title="Add User to Chat">
                         <AddIcon className='add-icon' fontSize='small' />
                       </Tooltip>
@@ -172,8 +181,23 @@ const ChatPage = () => {
                 }
               </div>
             </React.Fragment>
-
           </div>
+          <Drawer
+            anchor="top" transitionDuration={{ enter: 750, exit: 750 }}
+            PaperProps={{
+              style: {
+                minWidth: "100%", minHeight: `${height}`, display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                alignItems: "center", justifyContent: "center"
+              }
+            }}
+            className='drawer'
+            open={open}
+            onClose={() => openClose(false)}
+          >
+            <div style={{ width: "30%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}>Hello</div>
+            <AddContact height={height} userInfo={userInfo} width={40} timeUpdated={timeUpdated} />
+            <div style={{ width: "30%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}></div>
+          </Drawer>
         </ChattingLaptop>
       }
       {width > 1024 && width < 1224 &&
@@ -184,7 +208,7 @@ const ChatPage = () => {
                 <ThemeProvider theme={theme}>
                   <div className='hover-item add-contact' style={{ height: "8%" }}>
                     <h3>Add a contact</h3>
-                    <div onClick={() => nav('/addContact')}>
+                    <div onClick={() => openClose(true)}>
                       <Tooltip title="Add User to Chat">
                         <AddIcon className='add-icon' fontSize='small' />
                       </Tooltip>
@@ -192,7 +216,7 @@ const ChatPage = () => {
                   </div>
                   <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
-                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat}
+                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
                 <UserDetails userInfo={userInfo} />
               </div>
@@ -204,8 +228,23 @@ const ChatPage = () => {
                 }
               </div>
             </React.Fragment>
-
           </div>
+          <Drawer
+            anchor="top" transitionDuration={{ enter: 750, exit: 750 }}
+            PaperProps={{
+              style: {
+                minWidth: "100%", minHeight: `${height}`, display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                alignItems: "center", justifyContent: "center"
+              }
+            }}
+            className='drawer'
+            open={open}
+            onClose={() => openClose(false)}
+          >
+            <div style={{ width: "25%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}>Hello</div>
+            <AddContact height={height} userInfo={userInfo} width={50} timeUpdated={timeUpdated} />
+            <div style={{ width: "25%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}></div>
+          </Drawer>
         </ChattingLT>
       }
       {width >= 768 && width <= 1024 &&
@@ -216,7 +255,7 @@ const ChatPage = () => {
                 <ThemeProvider theme={theme}>
                   <div className='hover-item add-contact' style={{ height: "8%" }}>
                     <h3>Add a contact</h3>
-                    <div onClick={() => nav('/addContact')}>
+                    <div onClick={() => openClose(true)}>
                       <Tooltip title="Add User to Chat">
                         <AddIcon className='add-icon' fontSize='small' />
                       </Tooltip>
@@ -224,7 +263,7 @@ const ChatPage = () => {
                   </div>
                   <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
-                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat}
+                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
                 <UserDetails userInfo={userInfo} />
               </div>
@@ -236,8 +275,23 @@ const ChatPage = () => {
                 }
               </div>
             </React.Fragment>
-
           </div>
+          <Drawer
+            anchor="top" transitionDuration={{ enter: 750, exit: 750 }}
+            PaperProps={{
+              style: {
+                minWidth: "100%", minHeight: `${height}`, display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                alignItems: "center", justifyContent: "center"
+              }
+            }}
+            className='drawer'
+            open={open}
+            onClose={() => openClose(false)}
+          >
+            <div style={{ width: "20%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}>Hello</div>
+            <AddContact height={height} userInfo={userInfo} width={60} timeUpdated={timeUpdated} />
+            <div style={{ width: "20%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}></div>
+          </Drawer>
         </ChattingTablet>
       }
     </>

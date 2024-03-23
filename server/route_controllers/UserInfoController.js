@@ -73,7 +73,7 @@ const userContacts = async (req, res) => {
           const userDetails = await User.findById(decoded.userId)
           const contactIds = userDetails.userContacts.map((contact) => new mongoose.Types.ObjectId(contact.contactId))
           const allUsers = await User.find({ _id: { $in: contactIds } })
-
+          // console.log(await User.find({ username: { $regex: "datta", $options: 'i' } }))
           const projectedData = allUsers.map(async (element, index) => {
             const latestMessage = await findByElement(decoded.userId, element._id)
             return {
