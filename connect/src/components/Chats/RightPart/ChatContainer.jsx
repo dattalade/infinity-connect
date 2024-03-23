@@ -33,8 +33,8 @@ const ChatContainer = (props) => {
           <React.Fragment>
             <Container selectedChat={selectedChat}>
               <div className='hello'>
-                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} />
-                <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} />
+                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} theme={props.currentChat.theme} />
+                <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} theme={props.currentChat.theme} />
               </div>
             </Container>
             <Drawer

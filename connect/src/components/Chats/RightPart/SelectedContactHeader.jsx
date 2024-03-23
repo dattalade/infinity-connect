@@ -20,7 +20,7 @@ const SelectedContactHeader = (props) => {
   return (
     <ThemeProvider theme={theme}>
       {props.selectedChat &&
-        <Header>
+        <Header bg={props.theme}>
           <div className='header-details'>
             <div className='avatar-name'>
               <Tooltip title="Close chat" placement='top'>
@@ -78,6 +78,8 @@ const Header = styled.div`
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     align-items: center;
+    background-color: ${props => props.bg === '' ? `#0d2b6e` : 'none'};
+    border-radius: ${props => props.bg === '' ? '0.5rem' : '0rem'};
   }
   .empty-photo{
     background-color: grey;

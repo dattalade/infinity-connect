@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import PersonIcon from '@mui/icons-material/Person';
 import CheckIcon from '@mui/icons-material/Check';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const AddContact = ({ height, userInfo, width, timeUpdated }) => {
@@ -65,7 +63,6 @@ const AddContact = ({ height, userInfo, width, timeUpdated }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer />
       <Contact height={height} width={width}>
         <div className='flexes'>
           <div className='contacts'>

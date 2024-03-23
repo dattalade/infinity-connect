@@ -41,7 +41,7 @@ const ChatInput = (props) => {
   return (
     <ThemeProvider theme={theme}>
       {props.userInfo && props.selectedChat &&
-        <Input>
+        <Input bg={props.theme}>
           <div className='inputs'>
             <div className='emoji-message'>
               <div className='hover-item' onClick={() => setShowPicker(!showPicker)}>
@@ -54,7 +54,7 @@ const ChatInput = (props) => {
               }
             </div>
             <div className='message'>
-              <input className='text-message' type='text' onKeyPress={(e) => enterKey(e)}  
+              <input className='text-message' type='text' onKeyPress={(e) => enterKey(e)} autoFocus
                 placeholder='Send a message' value={message} onChange={(e) => setMessage(e.target.value)} />
             </div>
             <div onClick={sendChat}>
@@ -83,7 +83,7 @@ const Input = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // background-color: #0d2b6e;
+    background-color: ${props => props.bg === '' ? `#0d2b6e` : 'none'};
     align-items: center;
     padding-left: 0.6rem;
     padding-right: 0.6rem;

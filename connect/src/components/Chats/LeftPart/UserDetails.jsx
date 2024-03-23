@@ -3,15 +3,18 @@ import styled from 'styled-components'
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import Settings from '../LeftPart/Settings'
 import Cookies from 'universal-cookie'
 import { useNavigate } from 'react-router-dom';
-import { ThemeProvider, Tooltip, createTheme } from '@mui/material';
+import { Drawer, ThemeProvider, Tooltip, createTheme } from '@mui/material';
 
 const cookies = new Cookies();
 
 const UserDetails = (props) => {
 
   const nav = useNavigate();
+  const [open, setOpen] = useState(false)
+  const [height, setHeight] = useState(window.innerHeight);
   const theme = createTheme({
     typography: {
       fontFamily: [
@@ -28,6 +31,16 @@ const UserDetails = (props) => {
   }, [props])
 
   useEffect(() => {
+    const handleResize = () => {
+      setHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (cookies.get('token') === undefined)
       nav('/login')
   }, [nav])
@@ -35,6 +48,10 @@ const UserDetails = (props) => {
   const removeToken = () => {
     cookies.remove('token')
     nav('/login')
+  }
+
+  const openClose = (value) => {
+    setOpen(value)
   }
 
   return (
@@ -54,7 +71,7 @@ const UserDetails = (props) => {
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "3rem" }}>
               <Tooltip title="Settings">
-                <div className='settings hover-item' onClick={() => nav('/settings')}>
+                <div className='settings hover-item' onClick={() => openClose(true)}>
                   <SettingsSuggestIcon fontSize='medium' color='warning' />
                   <span>Settings</span>
                 </div>
@@ -69,6 +86,22 @@ const UserDetails = (props) => {
           </div>
         }
       </Info>
+      <Drawer
+        anchor="bottom" transitionDuration={{ enter: 750, exit: 750 }}
+        PaperProps={{
+          style: {
+            minWidth: "100%", minHeight: `${height}`, display: "flex", flexDirection: "row", backgroundColor: "transparent",
+            alignItems: "center", justifyContent: "center"
+          }
+        }}
+        className='drawer'
+        open={open}
+        onClose={() => openClose(false)}
+      >
+        <div style={{ width: "20%" }}></div>
+        <Settings />
+        <div style={{ width: "20%" }}></div>
+      </Drawer>
     </ThemeProvider>
   )
 }

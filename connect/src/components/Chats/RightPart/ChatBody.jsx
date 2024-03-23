@@ -1,8 +1,10 @@
 import { ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
+import validator from 'validator';
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
+import { Link } from 'react-router-dom';
 
 var dateMap = new Map();
 const months = { 1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December" }
@@ -81,16 +83,23 @@ const ChatBody = (props) => {
     <ThemeProvider theme={theme}>
       <>
         {props.userInfo && props.selectedChat && messages && props.socket &&
-          <Messages>
+          <Messages padding={props.theme}>
             <div className='chatting'>
               {messages.map((element, index) =>
                 <React.Fragment key={index}>
                   <Data messageTime={new Date(element.time).toLocaleDateString()} presentMessageId={element._id} timeStamp={new Date(element.time)} />
                   <div ref={scrollRef} className={element.from === props.userInfo._id ? 'me message' : 'friend message'}>
                     <Tooltip title={new Date(element.time).toLocaleString()} placement='top'>
-                      <p className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}><span style={{ wordBreak: "break-word" }}>
-                        {element.message}</span>
-                      </p>
+
+                      {validator.isURL(element.message) ?
+                        <Link to={element.message} target='_blank'
+                          className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}>
+                          <span style={{ wordBreak: "break-word" }}>{element.message}</span>
+                        </Link> :
+                        <p className={element.from === props.userInfo._id ? 'me-message' : 'friend-message'}>
+                          <span style={{ wordBreak: "break-word" }}>{element.message}</span>
+                        </p>
+                      }
                     </Tooltip>
                   </div>
                 </React.Fragment>
@@ -98,7 +107,7 @@ const ChatBody = (props) => {
             </div>
           </Messages>
         }
-        <ChatInput userInfo={props.userInfo} selectedChat={props.selectedChat} sendMessage={sendMessage} />
+        <ChatInput userInfo={props.userInfo} selectedChat={props.selectedChat} sendMessage={sendMessage} theme={props.theme} />
       </>
     </ThemeProvider >
   )
@@ -117,7 +126,7 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
           <p style={{ color: "black", display: "flex", justifyContent: "center" }}>
             <span style={{
               background: `url(${url}) no-repeat`, backgroundSize: "cover",
-              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "0.2rem"
             }}>Today</span>
           </p>
         </>
@@ -137,7 +146,7 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
           <p style={{ width: "100%", color: "black", display: "flex", justifyContent: "center" }}>
             <span style={{
               background: `url(${url}) no-repeat`, backgroundSize: "cover",
-              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "0.2rem"
             }}>Yesterday</span>
           </p>
         </>
@@ -158,7 +167,7 @@ const Data = ({ messageTime, timeStamp, presentMessageId }) => {
           <p style={{ color: "black", display: "flex", justifyContent: "center" }}>
             <span style={{
               background: `url(${url}) no-repeat`, backgroundSize: "cover",
-              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "7.5px"
+              padding: "0.3rem 0.7rem 0.3rem 0.7rem", borderRadius: "0.2rem"
             }}>{str}</span>
           </p>
         </>
@@ -179,6 +188,7 @@ const Messages = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    padding-top: ${props => props.padding === '' ? `1rem` : '0rem'};
     height: 96%;
     color: black;
     width: 97%;
@@ -214,7 +224,7 @@ const Messages = styled.div`
     display: flex;
     overflow:hidden;
     justify-content: end;
-    padding: 0.5rem;
+    padding: 0.7rem;
     border-radius: 0.5rem;
   }
   .friend-message{
@@ -223,7 +233,7 @@ const Messages = styled.div`
     color: black;
     display: flex;
     justify-content: start;
-    padding: 0.5rem;
+    padding: 0.7rem;
     border-radius: 0.5rem;
   }
 `

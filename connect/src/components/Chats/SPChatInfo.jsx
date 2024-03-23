@@ -58,7 +58,6 @@ const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
               if(response.data.status){
                 if(timeUpdated1 !== undefined && openClose !== undefined && selectedChat !== undefined){
                   timeUpdated1(selectedChat, response.data.link)
-                  openClose(false)
                 }
               }
             })
