@@ -6,6 +6,7 @@ const UserInfoController = require('../route_controllers/UserInfoController');
 const MessageController = require('../route_controllers/MessageController');
 const ThemeController = require('../route_controllers/ThemeController');
 const AllUsersController = require('../route_controllers/AllUsersController')
+const UploadController = require('../route_controllers/UploadController');
 
 router.post('/add-user', RegisterController.saveUser)
 router.post('/check-user', LoginController.checkUser)
@@ -17,5 +18,6 @@ router.post('/retrieve-themes', ThemeController.retrieveThemes)
 router.post('/update-theme', ThemeController.updateTheme)
 router.post('/search-users', AllUsersController.searchUsers)
 router.post('/add-contact', AllUsersController.addContact)
+router.post('/upload', UploadController.uploadMulter, UploadController.upload);
 
 module.exports = router;

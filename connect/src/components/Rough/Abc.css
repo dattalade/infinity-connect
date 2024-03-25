@@ -7,6 +7,10 @@ body{
     outline: none;
   }
   background-size: cover;
+
+  input[type=file]::file-selector-button{
+
+  }
 }
 
 .container

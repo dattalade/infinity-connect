@@ -28,7 +28,7 @@ const SelectedContactHeader = (props) => {
                   <ArrowBackIosNewIcon fontSize='small' />
                 </div>
               </Tooltip>
-              {props.selectedChat.userAvatar === "" &&
+              {props.selectedChat.userAvatar.imageUrl === "" &&
                 <div className='avatar'>
                   <PersonIcon fontSize='medium' className='empty-photo' />
                 </div>

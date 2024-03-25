@@ -72,7 +72,7 @@ const Contacts = (props) => {
                     >
                       <div className='avatar-name'>
                         {
-                          element.userAvatar.length === 0 &&
+                          element.userAvatar.imageUrl === '' &&
                           <div className='avatar'>
                             <PersonIcon fontSize='medium' className='empty-photo' />
                           </div>

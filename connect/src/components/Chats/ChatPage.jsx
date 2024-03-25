@@ -171,7 +171,7 @@ const ChatPage = () => {
                 </ThemeProvider>
                 <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
-                <UserDetails userInfo={userInfo} />
+                <UserDetails userInfo={userInfo} timeUpdated={timeUpdated} />
               </div>
               <div className='right-part'>
                 {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}

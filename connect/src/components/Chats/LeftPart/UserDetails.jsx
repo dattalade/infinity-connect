@@ -61,7 +61,7 @@ const UserDetails = (props) => {
           <div style={{ height: "100%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", gap: "2rem" }}>
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-                {userInfo.userAvatar === "" &&
+                {userInfo.userAvatar.imageUrl === "" &&
                   <Tooltip title="Set Avatar">
                     <PersonIcon fontSize='medium' className='empty-photo hover-item' />
                   </Tooltip>
@@ -98,9 +98,11 @@ const UserDetails = (props) => {
         open={open}
         onClose={() => openClose(false)}
       >
-        <div style={{ width: "20%" }}></div>
-        <Settings />
-        <div style={{ width: "20%" }}></div>
+        <div style={{ width: "20%", height: `${height}px` }} onClick={() => setOpen(false)}></div>
+        {props.userInfo &&
+          <Settings userInfo={props.userInfo} timeUpdated={props.timeUpdated} />
+        }
+        <div style={{ width: "20%", height: `${height}px` }} onClick={() => setOpen(false)}></div>
       </Drawer>
     </ThemeProvider>
   )
