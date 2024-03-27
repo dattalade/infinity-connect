@@ -62,7 +62,7 @@ const ChatBody = (props) => {
   }, [arrival, props.selectedChat, props.userInfo,])
 
   const sendMessage = async (message) => {
-    await axios.post('http://localhost:5000/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date() })
+    await axios.post('http://localhost:5000/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date(), type: "text" })
       .then((response) => {
         setMessages(response.data.store)
         setSocketNeed(response.data.socketNeed)

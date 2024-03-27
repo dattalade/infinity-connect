@@ -41,8 +41,6 @@ const Contacts = (props) => {
     },
   });
 
-  // console.log(props.currentChat)
-
   return (
     <ThemeProvider theme={theme}>
       {userInfo &&
@@ -65,17 +63,27 @@ const Contacts = (props) => {
             }
             {userInfo.userContacts.length !== 0 && userContacts &&
               <React.Fragment>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div style={{
+                    padding: "0.35rem", backgroundColor: "whitesmoke", width: "90%",
+                    marginBottom: "1rem", borderRadius: "0.65rem"
+                  }}>
+                    <input type='search' className='search-bar' placeholder='Search' />
+                  </div>
+                </div>
                 {userContacts.map((element, index) =>
                   <div key={index} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <div className={selectedChat && selectedChat._id === element._id ? "contact selected" : "contact"}
                       onClick={() => props.changeChat(element)}
                     >
                       <div className='avatar-name'>
-                        {
-                          element.userAvatar.imageUrl === '' &&
+                        {element.userAvatar.imageUrl === '' &&
                           <div className='avatar'>
                             <PersonIcon fontSize='medium' className='empty-photo' />
                           </div>
+                        }
+                        {element.userAvatar.imageUrl !== "" &&
+                          <img className='avatar-photo' src={element.userAvatar.imageUrl} alt='No Avatar' />
                         }
                         <span className='contact-name'>{element.name}</span>
                       </div>
@@ -91,7 +99,6 @@ const Contacts = (props) => {
 
         </UserContacts>
       }
-      <hr style={{ borderColor: "darkslateblue" }} />
     </ThemeProvider >
   )
 }
@@ -123,6 +130,27 @@ const UserContacts = styled.div`
     transition: 0.5s ease-in-out;
   }
 
+  .avatar-photo{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.01rem;
+  }
+
+  .search-bar{
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    color: gray;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    height: 2rem;
+    padding: 0;
+    font-size: 1rem;
+  }
+
   .contact-name {
     max-width: 76%;
     overflow: hidden;
@@ -146,6 +174,8 @@ const UserContacts = styled.div`
     border-radius: 50%;
     padding: 5px;
     outline: none;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .contact{

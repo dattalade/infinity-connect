@@ -30,6 +30,11 @@ const Profile = ({ tabIndex, index, userInfo, timeUpdated, changeTab }) => {
                       <PersonIcon className='empty-photo' style={{ fontSize: '2rem' }} />
                     </div>
                   }
+                  {userInfo.userAvatar.imageUrl !== "" &&
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <img className='avatar-photo' src={userInfo.userAvatar.imageUrl} alt='No Avatar' />
+                    </div>
+                  }
                   <div>
                     <h2>{userInfo.name}</h2>
                     <p style={{ fontSize: "1rem", display: "flex", justifyContent: "center" }}>
@@ -61,6 +66,7 @@ const CSSProfile = styled.div`
   *{
     font-family: "Josefin Sans", sans-serif;
     padding: 0;
+    // margin: 0;
   }
 
   width: 100%;
@@ -79,6 +85,14 @@ const CSSProfile = styled.div`
 
   .hover-item{
     cursor: pointer;
+  }
+
+  .avatar-photo{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.01rem;
   }
 
   .empty-photo{

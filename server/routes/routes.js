@@ -19,5 +19,7 @@ router.post('/update-theme', ThemeController.updateTheme)
 router.post('/search-users', AllUsersController.searchUsers)
 router.post('/add-contact', AllUsersController.addContact)
 router.post('/upload', UploadController.uploadMulter, UploadController.upload);
+router.post('/update-avatar', UploadController.uploadMulter, UploadController.updateAvatar);
+router.post('/delete-avatar', UploadController.deleteImageByUrl)
 
 module.exports = router;

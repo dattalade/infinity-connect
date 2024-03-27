@@ -66,6 +66,9 @@ const UserDetails = (props) => {
                     <PersonIcon fontSize='medium' className='empty-photo hover-item' />
                   </Tooltip>
                 }
+                {userInfo.userAvatar.imageUrl !== "" &&
+                  <img className='avatar-photo' src={userInfo.userAvatar.imageUrl} alt='No Avatar' />
+                }
                 <h4>{userInfo.name}</h4>
               </div>
             </div>
@@ -117,15 +120,26 @@ const Info = styled.div`
     text-decoration: none;
     outline: none;
   }
+
   width: 100%;
   height: 22%;
+
   .empty-photo{
     background-color: grey;
     border-radius: 50%;
     padding: 5px;
     outline: none;
   }
-  .hover-item:hover{
+
+  .avatar-photo{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.01rem;
+  }
+
+  .hover-item{
     cursor: pointer;
   }
   .settings, .logout{

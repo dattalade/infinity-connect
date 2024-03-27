@@ -74,20 +74,23 @@ const Input = styled.div`
   width: 100%;
   display: flex;
   justify-content: end;
+  align-items: end;
   .hover-item{
     cursor: pointer;
   }
+  
   .inputs{
-    height: 100%;
-    width: 97%;
+    height: 80%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: transparent;
     background-color: ${props => props.bg === '' ? `#0d2b6e` : 'none'};
     align-items: center;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
   }
   .text-message::placeholder{
     font-family: 'Josefin Sans', sans-serif;
@@ -97,12 +100,11 @@ const Input = styled.div`
     width: 80%;
   }
   .text-message{
-    background: whitesmoke;
-    border-radius: 10px;
-    border-width: 1px;
+    border-radius: 0.5rem;
+    border-width: 0.01rem;
     border-style: none;
     width: 100%;
-    padding: 9px;
+    padding: 0.5rem;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 600;
   }

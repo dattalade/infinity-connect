@@ -44,6 +44,7 @@ const Container = styled.div`
     justify-content: center;
     gap: 2rem;
     height: 100%;
+    transition: 0.25s ease;
   }
 `
 

@@ -97,8 +97,11 @@ const AddContact = ({ height, userInfo, width, timeUpdated }) => {
                     <React.Fragment key={index}>
                       <div className='specific-user'>
                         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                          {item.userAvatar === '' &&
+                          {item.userAvatar.imageUrl === '' &&
                             <PersonIcon fontSize='medium' className='empty-photo' />
+                          }
+                          {item.userAvatar.imageUrl !== "" &&
+                            <img className='avatar-photo' src={item.userAvatar.imageUrl} alt='No Avatar' />
                           }
                           <p style={{ fontWeight: "600" }}>{item.name.toUpperCase()}</p>
                         </div>
@@ -154,6 +157,14 @@ const Contact = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
+  }
+
+  .avatar-photo{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.01rem;
   }
 
   .empty-photo{

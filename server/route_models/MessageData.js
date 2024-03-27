@@ -5,6 +5,7 @@ const messageSchema = new mongoose.Schema({
   from: ObjectId,
   to: ObjectId,
   message: String,
+  type: String,
   time: Date
 })
 

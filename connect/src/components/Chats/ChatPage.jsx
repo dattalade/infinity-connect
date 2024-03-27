@@ -107,6 +107,7 @@ const ChatPage = () => {
 
   const selectChat = (element) => {
     setSelectedChat(element);
+    timeUpdated();
   }
 
   const timeUpdated = async () => {
@@ -160,14 +161,13 @@ const ChatPage = () => {
               <div className='left-part'>
                 <ThemeProvider theme={theme}>
                   <div className='hover-item add-contact' style={{ height: "8%" }}>
-                    <h3>Add a contact</h3>
+                    <h4 style={{ textTransform: "uppercase" }}>Add&nbsp;a&nbsp;contact</h4>
                     <div onClick={() => setOpen(true)}>
                       <Tooltip title="Add User to Chat">
                         <AddIcon className='add-icon' fontSize='small' />
                       </Tooltip>
                     </div>
                   </div>
-                  <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
                 <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
@@ -214,7 +214,6 @@ const ChatPage = () => {
                       </Tooltip>
                     </div>
                   </div>
-                  <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
                 <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
@@ -261,7 +260,6 @@ const ChatPage = () => {
                       </Tooltip>
                     </div>
                   </div>
-                  <hr style={{ borderColor: "darkslateblue" }} />
                 </ThemeProvider>
                 <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
                   currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} />
@@ -328,19 +326,19 @@ const ChattingLaptop = styled.div`
     cursor: pointer;
   }
   .container{
-    width: 85%;
-    height: 90%;
+    width: 92%;
+    height: 92%;
     background-color: rgb(2, 2, 38);
     color: white;
     display: flex;
     justify-content: space-between;
   }
   .left-part{
-    width: 24%;
+    width: 20%;
     height: 100%;
   }
   .right-part{
-    width: 75.5%;
+    width: 79%;
     height: 100%;
   }
 `

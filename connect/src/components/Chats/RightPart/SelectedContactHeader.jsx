@@ -24,7 +24,7 @@ const SelectedContactHeader = (props) => {
           <div className='header-details'>
             <div className='avatar-name'>
               <Tooltip title="Close chat" placement='top'>
-                <div className='hover-item' onClick={() => props.changeChat(undefined)}>
+                <div className='hover-item' onClick={() => { props.newClass(); }}>
                   <ArrowBackIosNewIcon fontSize='small' />
                 </div>
               </Tooltip>
@@ -32,6 +32,9 @@ const SelectedContactHeader = (props) => {
                 <div className='avatar'>
                   <PersonIcon fontSize='medium' className='empty-photo' />
                 </div>
+              }
+              {props.selectedChat.userAvatar.imageUrl !== "" &&
+                <img className='avatar-photo' src={props.selectedChat.userAvatar.imageUrl} alt='No Avatar' />
               }
               <Tooltip title={props.selectedChat.name} placement='right'>
                 <p className='contact-name'>{props.selectedChat.name}</p>
@@ -67,9 +70,11 @@ const Header = styled.div`
   height: 8%;
   display: flex;
   justify-content: end;
+
   .hover-item{
     cursor: pointer;
   }
+
   .header-details{
     height: 100%;
     width: 100%;
@@ -81,27 +86,40 @@ const Header = styled.div`
     background-color: ${props => props.bg === '' ? `#0d2b6e` : 'none'};
     border-radius: ${props => props.bg === '' ? '0.5rem' : '0rem'};
   }
+
+  .avatar-photo{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.01rem;
+  }
+
   .empty-photo{
     background-color: grey;
     border-radius: 50%;
     padding: 5px;
     outline: none;
   }
+
   .avatar{
     min-width: fit-content;
   }
+
   .avatar-name{
     display: flex;
     align-items: center;
     max-width: 55%;
     gap: 1rem;
   }
+
   .contact-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 500;
   }
+
   .calls-details{
     display: flex;
     gap: 2.5rem;

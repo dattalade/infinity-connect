@@ -2,15 +2,12 @@ body{
   color: dark;
   transition: 0.5s ease;
   word-break: break-all;
-  background-color: rgb(2, 2, 32);
+  background-color: li;
   .text:focus{
     outline: none;
   }
   background-size: cover;
 
-  input[type=file]::file-selector-button{
-
-  }
 }
 
 .container

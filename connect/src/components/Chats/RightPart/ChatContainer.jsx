@@ -9,6 +9,7 @@ const ChatContainer = (props) => {
 
   const [selectedChat, setSelectedChat] = useState(undefined)
   const [open, setOpen] = useState(false);
+  const [newClass, setNewClass] = useState(false)
 
   const theme = createTheme({
     typography: {
@@ -26,14 +27,23 @@ const ChatContainer = (props) => {
   const openClose = (value) => {
     setOpen(value);
   }
+
+  const isFadeOut = () => {
+    setNewClass(true)
+    setTimeout(() => {
+      props.changeChat(undefined)
+    }, 250)
+    console.log("Say")
+  }
+
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
         {props.userInfo && props.currentChat && props.socket &&
           <React.Fragment>
             <Container selectedChat={selectedChat}>
-              <div className='hello'>
-                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} theme={props.currentChat.theme} />
+              <div className={newClass ? "hello fade" : "hello"}>
+                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} theme={props.currentChat.theme} newClass={isFadeOut} />
                 <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} theme={props.currentChat.theme} />
               </div>
             </Container>
@@ -66,6 +76,7 @@ const Container = styled.div`
   }
   width: 100%;
   height: 100%;
+
   .hello{
     width: 100%;
     height: 100%;
@@ -77,6 +88,11 @@ const Container = styled.div`
     background-size: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `cover` : 'none'};
     background-clip: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `border-box` : 'none'};
     background-position: ${props => props.selectedChat && props.selectedChat.theme !== '' ? `center` : 'none'};
+    transition: 0.25s ease;
+  }
+
+  .fade{
+    opacity: 0;
   }
 `
 

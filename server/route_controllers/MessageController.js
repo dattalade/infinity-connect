@@ -3,7 +3,7 @@ const User = require('../route_models/UserData')
 
 const sendMessage = async (req, res) => {
   try {
-    const { from, to, message, time } = req.body;
+    const { from, to, message, time, type } = req.body;
     const isAvailable = await User.findById(to);
     const bool = await isAvailable.userContacts.find((item) => JSON.stringify(item.contactId) == JSON.stringify(from));
     if (bool == undefined) {
@@ -15,6 +15,7 @@ const sendMessage = async (req, res) => {
       from: from,
       to: to,
       message: message,
+      type: type,
       time: time
     })
     await newMessage.save();
