@@ -120,7 +120,7 @@ const UserContacts = styled.div`
     width: 0.1rem;
     &-thumb{
       background-color: #938e8e;
-      width: 0.1rem
+      width: 0.1rem;
     }
   }
   .all-contacts{
