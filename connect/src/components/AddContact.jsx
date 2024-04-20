@@ -75,7 +75,9 @@ const AddContact = ({ height, userInfo, width, timeUpdated }) => {
             {search === '' &&
               <Scrollbars>
                 <div className='no-search' style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "92.5%" }}>
-                  <p style={{ fontSize: "2rem" }}>Search for any user</p>
+                  <p style={{ fontSize: "2rem" }}>Search for new
+                    <span style={{ color: "darkslateblue", textTransform: "uppercase" }}>&nbsp;connector</span>
+                  </p>
                 </div>
               </Scrollbars>
             }
