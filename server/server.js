@@ -20,7 +20,7 @@ const server = app.listen(PORT, () => {
 
 const io = socket(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://infinity-connect.vercel.app',
     credentials: true
   }
 })
