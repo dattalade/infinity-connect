@@ -30,7 +30,7 @@ const AddContact = ({ height, userInfo, width, timeUpdated }) => {
   const getSearchUsers = async (str) => {
     if (userInfo !== undefined && str.trim() !== '') {
       setLoadedUsers(true);
-      await axios.post('http://localhost:5000/search-users', { searchValue: str.trim(), userId: userInfo._id })
+      await axios.post('https://infinity-connect.onrender.com/search-users', { searchValue: str.trim(), userId: userInfo._id })
         .then((response) => {
           setAllUsers(response.data)
           setLoadedUsers(false)
@@ -42,7 +42,7 @@ const AddContact = ({ height, userInfo, width, timeUpdated }) => {
   }
 
   const addToContacts = async (item) => {
-    await axios.post('http://localhost:5000/add-contact', { contact: item, userInfo: userInfo })
+    await axios.post('https://infinity-connect.onrender.com/add-contact', { contact: item, userInfo: userInfo })
       .then((response) => {
         if (response.data.status) {
           setAllUsers((prevUsers) => {
