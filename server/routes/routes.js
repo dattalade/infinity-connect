@@ -8,6 +8,7 @@ const ThemeController = require('../route_controllers/ThemeController');
 const AllUsersController = require('../route_controllers/AllUsersController')
 const UploadController = require('../route_controllers/UploadController');
 
+router.get('/', UserInfoController.init)
 router.post('/add-user', RegisterController.saveUser)
 router.post('/check-user', LoginController.checkUser)
 router.post('/retrieve-userinfo', UserInfoController.userInfo)

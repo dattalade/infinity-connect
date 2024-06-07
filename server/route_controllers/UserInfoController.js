@@ -58,6 +58,10 @@ const findByElement = async (from, to) => {
   return ""
 }
 
+const init = async (req, res) => {
+  return res.json({ "Hello": "success" })
+}
+
 const userContacts = async (req, res) => {
   try {
     const { jwtToken } = req.body;
@@ -130,5 +134,6 @@ const userContacts = async (req, res) => {
 
 module.exports = {
   userInfo,
-  userContacts
+  userContacts,
+  init
 };
