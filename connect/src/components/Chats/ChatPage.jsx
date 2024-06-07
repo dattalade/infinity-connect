@@ -42,7 +42,7 @@ const ChatPage = () => {
       const currentDate = new Date();
       if (currentDate.getHours() === 0 && currentDate.getMinutes() === 0 && currentDate.getSeconds() === 1) {
         const getInfo = async () => {
-          await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+          await axios.post('https://infinity-connect.onrender.com/retrieve-userinfo', { jwtToken: cookies.get('token') })
             .then((response) => {
               setUserInfo(response.data)
             })
@@ -77,14 +77,14 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (userInfo !== undefined) {
-      socket.current = io('http://localhost:5000')
+      socket.current = io('https://infinity-connect.onrender.com')
       socket.current.emit("add-user", userInfo._id)
     }
   }, [userInfo])
 
   useEffect(() => {
     const getInfo = async () => {
-      await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+      await axios.post('https://infinity-connect.onrender.com/retrieve-userinfo', { jwtToken: cookies.get('token') })
         .then((response) => {
           setUserInfo(response.data)
         })
@@ -92,7 +92,7 @@ const ChatPage = () => {
           console.log(err.message)
         })
 
-      await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
+      await axios.post('https://infinity-connect.onrender.com/retrieve-usercontacts', { jwtToken: cookies.get('token') })
         .then((response) => {
           if (response.data.length > 0)
             setUserContacts(response.data)
@@ -112,14 +112,14 @@ const ChatPage = () => {
 
   const timeUpdated = async () => {
     console.log("Time updated")
-    await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+    await axios.post('https://infinity-connect.onrender.com/retrieve-userinfo', { jwtToken: cookies.get('token') })
       .then((response) => {
         setUserInfo(response.data)
       })
       .catch((err) => {
         console.log(err.message)
       })
-    await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
+    await axios.post('https://infinity-connect.onrender.com/retrieve-usercontacts', { jwtToken: cookies.get('token') })
       .then((response) => {
         if (response.data.length > 0)
           setUserContacts(response.data)
@@ -130,14 +130,14 @@ const ChatPage = () => {
   }
 
   const timeUpdated1 = async (selectedChat, link) => {
-    await axios.post('http://localhost:5000/retrieve-userinfo', { jwtToken: cookies.get('token') })
+    await axios.post('https://infinity-connect.onrender.com/retrieve-userinfo', { jwtToken: cookies.get('token') })
       .then((response) => {
         setUserInfo(response.data)
       })
       .catch((err) => {
         console.log(err.message)
       })
-    await axios.post('http://localhost:5000/retrieve-usercontacts', { jwtToken: cookies.get('token') })
+    await axios.post('https://infinity-connect.onrender.com/retrieve-usercontacts', { jwtToken: cookies.get('token') })
       .then((response) => {
         if (response.data.length > 0)
           setUserContacts(response.data)

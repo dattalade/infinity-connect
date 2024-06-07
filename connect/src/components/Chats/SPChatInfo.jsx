@@ -24,7 +24,7 @@ const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
 
   useEffect(() => {
     const getThemes = async () => {
-      await axios.post('http://localhost:5000/retrieve-themes')
+      await axios.post('https://infinity-connect.onrender.com/retrieve-themes')
         .then((response) => {
           setThemes(response.data)
         })
@@ -53,7 +53,7 @@ const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
     else {
       const funcWrite = async () => {
         if (themes !== undefined && userInfo !== undefined && selectedChat !== undefined) {
-          await axios.post('http://localhost:5000/update-theme', { themeId: themes[selectedTheme]._id, from: userInfo._id, to: selectedChat._id })
+          await axios.post('https://infinity-connect.onrender.com/update-theme', { themeId: themes[selectedTheme]._id, from: userInfo._id, to: selectedChat._id })
             .then((response) => {
               if(response.data.status){
                 if(timeUpdated1 !== undefined && openClose !== undefined && selectedChat !== undefined){

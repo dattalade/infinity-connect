@@ -45,7 +45,7 @@ const Avatar = ({ tabIndex, index, userInfo, timeUpdated }) => {
       formData.append('image', file)
       formData.append('id', userInfo._id)
 
-      await axios.post('http://localhost:5000/upload', formData, {
+      await axios.post('https://infinity-connect.onrender.com/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then((response) => {
@@ -83,7 +83,7 @@ const Avatar = ({ tabIndex, index, userInfo, timeUpdated }) => {
       formData.append('public', userInfo.userAvatar.cloudinaryId)
 
       console.log(formData)
-      await axios.post('http://localhost:5000/update-avatar', formData, {
+      await axios.post('https://infinity-connect.onrender.com/update-avatar', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then((response) => {
@@ -99,7 +99,7 @@ const Avatar = ({ tabIndex, index, userInfo, timeUpdated }) => {
 
   const removeAvatar = async () => {
     if (userInfo !== undefined) {
-      await axios.post('http://localhost:5000/delete-avatar', { id: userInfo._id, public: userInfo.userAvatar.cloudinaryId },)
+      await axios.post('https://infinity-connect.onrender.com/delete-avatar', { id: userInfo._id, public: userInfo.userAvatar.cloudinaryId },)
         .then((response) => {
           console.log(response.data)
           if (response.data.status) {

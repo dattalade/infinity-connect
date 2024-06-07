@@ -31,7 +31,7 @@ const ChatBody = (props) => {
   useEffect(() => {
     const allMessages = async () => {
       if (props.userInfo !== undefined && props.selectedChat !== undefined) {
-        await axios.post('http://localhost:5000/retrieve-msg', { from: props.userInfo._id, to: props.selectedChat._id })
+        await axios.post('https://infinity-connect.onrender.com/retrieve-msg', { from: props.userInfo._id, to: props.selectedChat._id })
           .then((response) => {
             setMessages(response.data.messages)
           })
@@ -62,7 +62,7 @@ const ChatBody = (props) => {
   }, [arrival, props.selectedChat, props.userInfo,])
 
   const sendMessage = async (message) => {
-    await axios.post('http://localhost:5000/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date(), type: "text" })
+    await axios.post('https://infinity-connect.onrender.com/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date(), type: "text" })
       .then((response) => {
         setMessages(response.data.store)
         setSocketNeed(response.data.socketNeed)

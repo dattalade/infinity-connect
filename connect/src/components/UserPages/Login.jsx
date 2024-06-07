@@ -31,7 +31,7 @@ const Login = () => {
   const checkUser = (e) => {
     e.preventDefault();
     e.preventDefault();
-    axios.post('http://localhost:5000/check-user', existUser)
+    axios.post('https://infinity-connect.onrender.com/check-user', existUser)
       .then((response) => {
         if (response.data.status === 'ok') {
           cookies.set('token', response.data.token)

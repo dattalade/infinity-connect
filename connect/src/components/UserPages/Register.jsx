@@ -33,7 +33,7 @@ const Login = () => {
 
   const saveUser = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/add-user', newUser)
+    axios.post('https://infinity-connect.onrender.com/add-user', newUser)
       .then((response) => {
         if (response.data.status !== 'ok') {
           toast.warn(`${response.data.message}`, {
