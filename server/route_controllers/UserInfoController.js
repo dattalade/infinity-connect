@@ -93,7 +93,7 @@ const userContacts = async (req, res) => {
           })
 
           var sendData = await Promise.all(projectedData)
-          console.log(projectedData)
+          console.log(sendData)
 
           sendData.sort((a, b) => {
             if (a.latestMessage == "" && b.latestMessage == "")
