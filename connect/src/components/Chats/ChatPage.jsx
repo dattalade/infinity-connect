@@ -95,6 +95,7 @@ const ChatPage = () => {
       await axios.post('https://infinity-connect.onrender.com/retrieve-usercontacts', { jwtToken: cookies.get('token') })
         .then((response) => {
           if (response.data.length > 0)
+            console.log(response.data)
             setUserContacts(response.data)
         })
         .catch((err) => {

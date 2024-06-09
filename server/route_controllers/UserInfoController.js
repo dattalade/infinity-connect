@@ -53,6 +53,7 @@ const makeChange = (timestamp) => {
 const findByElement = async (from, to) => {
   const allMessages = await Message.find({ from: { $in: [from, to] }, to: { $in: [from, to] } }).sort({ time: "asc" })
   if (allMessages.length > 0) {
+    console.log(allMessages[allMessages.length - 1].time)
     return allMessages[allMessages.length - 1].time;
   }
   return ""
