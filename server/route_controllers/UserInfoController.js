@@ -46,7 +46,8 @@ const makeChange = (timestamp) => {
   let str = ""
   if (send.getDate() <= 9)
     str = str + months[send.getMonth() + 1] + " 0" + send.getDate() + ", " + send.getFullYear();
-  str = str + months[send.getMonth() + 1] + " " + send.getDate() + ", " + send.getFullYear();
+  else
+    str = str + months[send.getMonth() + 1] + " " + send.getDate() + ", " + send.getFullYear();
   return str;
 }
 
@@ -93,7 +94,6 @@ const userContacts = async (req, res) => {
           })
 
           var sendData = await Promise.all(projectedData)
-          console.log(sendData)
 
           sendData.sort((a, b) => {
             if (a.latestMessage == "" && b.latestMessage == "")
@@ -123,6 +123,8 @@ const userContacts = async (req, res) => {
               theme: element.theme
             }
           })
+
+          console.log(sendData)
 
           return res.json(sendData)
         }
