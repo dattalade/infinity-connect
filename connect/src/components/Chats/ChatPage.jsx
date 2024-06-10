@@ -96,7 +96,7 @@ const ChatPage = () => {
         .then((response) => {
           if (response.data.length > 0)
             console.log(response.data)
-            setUserContacts(response.data)
+          setUserContacts(response.data)
         })
         .catch((err) => {
           console.log(err.message)
@@ -107,6 +107,9 @@ const ChatPage = () => {
   }, [])
 
   const selectChat = (element) => {
+    if (cookies.get("current_chat") === undefined || JSON.stringify(cookies.get("current_chat")) !== JSON.stringify(element)) {
+      cookies.set("current_count", 0);
+    }
     setSelectedChat(element);
     timeUpdated();
   }

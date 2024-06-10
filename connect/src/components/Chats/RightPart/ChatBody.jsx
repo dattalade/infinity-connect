@@ -1,10 +1,13 @@
 import { ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
+import Moving from '../../../images/rocket.gif'
 import validator from 'validator';
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie'
+const cookies = new Cookies();
 
 var dateMap = new Map();
 const months = { 1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December" }
@@ -32,10 +35,13 @@ const ChatBody = (props) => {
   useEffect(() => {
     const allMessages = async () => {
       if (props.userInfo !== undefined && props.selectedChat !== undefined) {
-        setMessageLoad(true);
+        if (cookies.get("current_count") === 0) {
+          setMessageLoad(true);
+        }
         await axios.post('https://infinity-connect.onrender.com/retrieve-msg', { from: props.userInfo._id, to: props.selectedChat._id })
           .then((response) => {
             setMessages(response.data.messages)
+            cookies.set("current_count", 1)
             setMessageLoad(false);
           })
           .catch((err) => {
@@ -64,9 +70,6 @@ const ChatBody = (props) => {
     }
   }, [arrival, props.selectedChat, props.userInfo,])
 
-  console.log(messages)
-  console.log(props.selectedChat)
-
   const sendMessage = async (message) => {
     await axios.post('https://infinity-connect.onrender.com/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date(), type: "text" })
       .then((response) => {
@@ -85,15 +88,32 @@ const ChatBody = (props) => {
     })
   }
 
+  console.log(cookies.get("current_count"))
+
   if (messageLoad) {
     return (
       <>
         <Loader>
-          
+          <div class="loader"></div>
         </Loader>
         <ChatInput userInfo={props.userInfo} selectedChat={props.selectedChat} sendMessage={sendMessage} theme={props.theme} />
       </>
     )
+  }
+
+  if (messages !== undefined) {
+    if (messages.length === 0) {
+      return (
+        <>
+          <NoMessages>
+            <img className='image-rocket' src={Moving} alt='' />
+            <div class="loader">
+            </div>
+          </NoMessages>
+          <ChatInput userInfo={props.userInfo} selectedChat={props.selectedChat} sendMessage={sendMessage} theme={props.theme} />
+        </>
+      )
+    }
   }
 
   return (
@@ -257,6 +277,68 @@ const Messages = styled.div`
 const Loader = styled.div`
   height: 84%;
   width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    background: radial-gradient(circle closest-side,#000 94%,#0000) right/calc(200% - 1em) 100%;
+    animation: l24 0.5s infinite alternate linear;
+  }
+
+  .loader::before {
+    content: "Loading...";
+    line-height: 1em;
+    color: #0000;
+    background: inherit;
+    background-image: radial-gradient(circle closest-side,#000 94%,#fff);
+    -webkit-background-clip:text;
+    background-clip:text;
+  }
+
+  @keyframes l24{
+    100%{background-position: left}
+  }
+`
+const NoMessages = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  .image-rocket{
+    height: 30%;
+    width: 30%;
+  }
+
+  .loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    background: radial-gradient(circle closest-side,#000 94%,#0000) right/calc(200% - 1em) 100%;
+    animation: l24 1s infinite alternate linear;
+  }
+
+  .loader::before {
+    content: "Start Messaging...";
+    line-height: 1em;
+    color: #0000;
+    background: inherit;
+    background-image: radial-gradient(circle closest-side,#000 94%, #33cccc);
+    -webkit-background-clip:text;
+    background-clip:text;
+  }
+
+  @keyframes l24{
+    100%{background-position: left}
+  }
 `
 
 export default ChatBody
