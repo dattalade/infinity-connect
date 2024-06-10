@@ -22,6 +22,7 @@ const ChatBody = (props) => {
   const [messages, setMessages] = useState(undefined);
   const [arrival, setArrival] = useState(null);
   const [socketNeed, setSocketNeed] = useState(false)
+  const [messageLoad, setMessageLoad] = useState(false);
   const scrollRef = useRef();
 
   useEffect(() => {
@@ -31,9 +32,11 @@ const ChatBody = (props) => {
   useEffect(() => {
     const allMessages = async () => {
       if (props.userInfo !== undefined && props.selectedChat !== undefined) {
+        setMessageLoad(true);
         await axios.post('https://infinity-connect.onrender.com/retrieve-msg', { from: props.userInfo._id, to: props.selectedChat._id })
           .then((response) => {
             setMessages(response.data.messages)
+            setMessageLoad(false);
           })
           .catch((err) => {
             console.log(err.message)
@@ -61,6 +64,9 @@ const ChatBody = (props) => {
     }
   }, [arrival, props.selectedChat, props.userInfo,])
 
+  console.log(messages)
+  console.log(props.selectedChat)
+
   const sendMessage = async (message) => {
     await axios.post('https://infinity-connect.onrender.com/send-message', { from: props.userInfo._id, to: props.selectedChat._id, message: message, time: new Date(), type: "text" })
       .then((response) => {
@@ -77,6 +83,17 @@ const ChatBody = (props) => {
       message: message,
       socketNeed: socketNeed,
     })
+  }
+
+  if (messageLoad) {
+    return (
+      <>
+        <Loader>
+          
+        </Loader>
+        <ChatInput userInfo={props.userInfo} selectedChat={props.selectedChat} sendMessage={sendMessage} theme={props.theme} />
+      </>
+    )
   }
 
   return (
@@ -236,6 +253,10 @@ const Messages = styled.div`
     padding: 0.7rem;
     border-radius: 0.5rem;
   }
+`
+const Loader = styled.div`
+  height: 84%;
+  width: 100%;
 `
 
 export default ChatBody
