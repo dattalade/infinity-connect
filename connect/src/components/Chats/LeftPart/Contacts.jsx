@@ -41,6 +41,13 @@ const Contacts = (props) => {
     },
   });
 
+  const someUpdate = (element, value) => {
+    if(props.changeChat !== undefined)
+      props.changeChat(element)
+    if(props.updateMobile !== undefined)
+      props.updateMobile(value);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       {userInfo &&
@@ -74,7 +81,7 @@ const Contacts = (props) => {
                 {userContacts.map((element, index) =>
                   <div key={index} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <div className={selectedChat && selectedChat._id === element._id ? "contact selected" : "contact"}
-                      onClick={() => props.changeChat(element)}
+                      onClick={() => someUpdate(element, false)}
                     >
                       <div className='avatar-name'>
                         {element.userAvatar.imageUrl === '' &&

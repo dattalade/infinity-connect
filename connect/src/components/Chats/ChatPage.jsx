@@ -24,6 +24,7 @@ const ChatPage = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
   const [open, setOpen] = useState(false);
+  const [mobileContact, setMobileContact] = useState(true)
 
   useEffect(() => {
     const handleResize = () => {
@@ -154,6 +155,10 @@ const ChatPage = () => {
       ...prevState,
       theme: link
     }))
+  }
+
+  const updateMobile = (value) => {
+    setMobileContact(value);
   }
 
   return (
@@ -296,6 +301,54 @@ const ChatPage = () => {
           </Drawer>
         </ChattingTablet>
       }
+      {width < 768 &&
+        <Mobile>
+          <div className='container'>
+            {mobileContact &&
+              <div className='left-part'>
+                <ThemeProvider theme={theme}>
+                  <div className='hover-item add-contact' style={{ height: "8%" }}>
+                    <h3>Add a contact</h3>
+                    <div onClick={() => openClose(true)}>
+                      <Tooltip title="Add User to Chat">
+                        <AddIcon className='add-icon' fontSize='small' />
+                      </Tooltip>
+                    </div>
+                  </div>
+                </ThemeProvider>
+                <Contacts userInfo={userInfo} userContacts={userContacts} changeChat={selectChat} loading={loading}
+                  currentChat={selectedChat} socket={socket} timeUpdated={timeUpdated} updateMobile={updateMobile} />
+                <UserDetails userInfo={userInfo} />
+              </div>
+            }
+            {!mobileContact &&
+              <div className='right-part'>
+                {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
+                {selectedChat &&
+                  <ChatContainer userInfo={userInfo} currentChat={selectedChat} changeChat={selectChat} updateMobile={updateMobile}
+                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} />
+                }
+              </div>
+            }
+          </div>
+          <Drawer
+            anchor="top" transitionDuration={{ enter: 750, exit: 750 }}
+            PaperProps={{
+              style: {
+                minWidth: "100%", minHeight: `${height}`, display: "flex", flexDirection: "row", backgroundColor: "transparent",
+                alignItems: "center", justifyContent: "center"
+              }
+            }}
+            className='drawer'
+            open={open}
+            onClose={() => openClose(false)}
+          >
+            <div style={{ width: "20%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}>Hello</div>
+            <AddContact height={height} userInfo={userInfo} width={60} timeUpdated={timeUpdated} />
+            <div style={{ width: "20%", height: `${height}px`, backgroundColor: "transparent" }} onClick={() => { openClose(false) }}></div>
+          </Drawer>
+        </Mobile>
+      }
     </>
   )
 }
@@ -433,6 +486,52 @@ const ChattingLT = styled.div`
   }
   .right-part{
     width: 69.5%;
+    height: 100%;
+  }
+`
+
+const Mobile = styled.div`
+*{
+    padding: 0;
+    margin: 0;
+  }
+  width: 100vw;
+  height: 100vh;
+  background-color: #131324;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  .add-icon{
+    background-color: blue;
+    border-radius: 50%;
+    padding: 5px;
+  }
+  .add-contact{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-right: 5px;
+    align-items: center;
+  }
+  .hover-item{
+    cursor: pointer;
+  }
+  .container{
+    width: 85%;
+    height: 85%;
+    background-color: rgb(2, 2, 38);
+    color: white;
+    display: flex;
+  }
+  .left-part{
+    width: 100%;
+    height: 100%;
+  }
+  .right-part{
+    width: 100%;
     height: 100%;
   }
 `
