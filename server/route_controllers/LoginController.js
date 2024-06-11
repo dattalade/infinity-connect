@@ -9,6 +9,10 @@ const checkUser = async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username: username })
+    if (!user.isVerified) {
+      await User.deleteOne({ _id: user._id })
+      return res.json({ type: "Username", message: "Username doesn't exist" })
+    }
     if (!user)
       return res.json({ type: "Username", message: "Username doesn't exist" })
     // check verify 
