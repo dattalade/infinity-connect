@@ -1,7 +1,19 @@
 const bcryptjs = require('bcryptjs')
+const nodemailer = require('nodemailer')
 const User = require('../route_models/UserData')
+const jwt = require('jsonwebtoken');
 
 var json = null;
+const SECRET_KEY = 'infinitydattalade123456789@@@@@@@@@'
+
+const transporter = nodemailer.createTransport
+  ({
+    service: 'gmail',
+    auth: {
+      user: '2100031692cseh@gmail.com',
+      pass: 'snkriyvximcvsuqa',
+    },
+  });
 
 const performValidation = (name, username, email, password, repassword) => {
   if (name.length < 3) {
@@ -92,12 +104,34 @@ const saveUser = async (req, res) => {
         password: await bcryptjs.hash(password, 10),
         whenRegistered: new Date()
       })
-    newUser.save();
+
     //Email functionality
+    const tokens = jwt.sign({ email: newUser.email }, SECRET_KEY, { expiresIn: '1h' });
+    const verificationLink = `https://infinity-connect.onrender.com/verify?token=${tokens}`;
+    const mailOptions =
+    {
+      from: '2100031692cseh@gmail.com',
+      to: newUser.email,
+      subject: 'Verify Connect Account',
+      text: `Click the following link to verify your email: ${verificationLink}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error occurred:', error.message);
+      }
+      else {
+        console.log('Message sent successfully!');
+        console.log('Message ID:', info.messageId);
+      }
+    });
+
+    await newUser.save();
     return res.json({ status: "ok", message: "Verify email to continue" })
   }
-  catch (e) {
-    next(e);
+  catch (error) {
+    console.error(error);
+    return res.json({ type: "Internal Error :", message: 'Refresh and try again' });
   }
 };
 
