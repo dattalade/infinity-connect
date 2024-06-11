@@ -10,6 +10,7 @@ const UploadController = require('../route_controllers/UploadController');
 
 router.get('/', UserInfoController.init)
 router.post('/add-user', RegisterController.saveUser)
+router.get('/verify', RegisterController.verifyUser)
 router.post('/check-user', LoginController.checkUser)
 router.post('/retrieve-userinfo', UserInfoController.userInfo)
 router.post('/retrieve-usercontacts', UserInfoController.userContacts)

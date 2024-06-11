@@ -135,6 +135,27 @@ const saveUser = async (req, res) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  const { token } = req.query;
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) {
+      return res.json({ type: "Invalid", message: 'verification token.' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.redirect('https://infinity-connect.vercel.app/login');
+  }
+  catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Invalid verification token.' });
+  }
+}
+
 module.exports = {
   saveUser,
+  verifyUser,
 };
