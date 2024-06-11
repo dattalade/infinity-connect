@@ -326,7 +326,7 @@ const ChatPage = () => {
                 {selectedChat === undefined && <WelcomePage userInfo={userInfo} socket={socket} timeUpdated={timeUpdated} />}
                 {selectedChat &&
                   <ChatContainer userInfo={userInfo} currentChat={selectedChat} changeChat={selectChat} updateMobile={updateMobile}
-                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} />
+                    socket={socket} timeUpdated={timeUpdated} timeUpdated1={timeUpdated1} width={width} />
                 }
               </div>
             }

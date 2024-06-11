@@ -17,6 +17,12 @@ const SelectedContactHeader = (props) => {
     },
   });
 
+  const updateSome = () =>{
+    props.newClass();
+    if(props.updateMobile !== undefined)
+        props.updateMobile(true)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       {props.selectedChat &&
@@ -24,7 +30,7 @@ const SelectedContactHeader = (props) => {
           <div className='header-details'>
             <div className='avatar-name'>
               <Tooltip title="Close chat" placement='top'>
-                <div className='hover-item' onClick={() => { props.newClass(); }}>
+                <div className='hover-item' onClick={() => updateSome()}>
                   <ArrowBackIosNewIcon fontSize='small' />
                 </div>
               </Tooltip>

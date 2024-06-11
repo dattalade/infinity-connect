@@ -43,7 +43,7 @@ const ChatContainer = (props) => {
           <React.Fragment>
             <Container selectedChat={selectedChat}>
               <div className={newClass ? "hello fade" : "hello"}>
-                <SelectedContactHeader selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} theme={props.currentChat.theme} newClass={isFadeOut} />
+                <SelectedContactHeader updateMobile={props.updateMobile}  selectedChat={selectedChat} openClose={openClose} changeChat={props.changeChat} theme={props.currentChat.theme} newClass={isFadeOut} />
                 <ChatBody userInfo={props.userInfo} selectedChat={selectedChat} socket={props.socket} timeUpdated={props.timeUpdated} theme={props.currentChat.theme} />
               </div>
             </Container>
@@ -60,7 +60,7 @@ const ChatContainer = (props) => {
               onClose={() => openClose(false)}
             >
               <div style={{ width: "60%", height: "100%" }} onClick={() => { openClose(false) }}></div>
-              <SPChatInfo selectedChat={selectedChat} userInfo={props.userInfo} openClose={openClose} timeUpdated1={props.timeUpdated1} />
+              <SPChatInfo width={props.width} selectedChat={selectedChat} userInfo={props.userInfo} openClose={openClose} timeUpdated1={props.timeUpdated1} />
             </Drawer>
           </React.Fragment>
         }

@@ -8,7 +8,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
+const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1, width }) => {
 
   const [selectedTheme, setSelectedTheme] = useState(-1);
   const [themes, setThemes] = useState(undefined)
@@ -55,8 +55,8 @@ const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
         if (themes !== undefined && userInfo !== undefined && selectedChat !== undefined) {
           await axios.post('https://infinity-connect.onrender.com/update-theme', { themeId: themes[selectedTheme]._id, from: userInfo._id, to: selectedChat._id })
             .then((response) => {
-              if(response.data.status){
-                if(timeUpdated1 !== undefined && openClose !== undefined && selectedChat !== undefined){
+              if (response.data.status) {
+                if (timeUpdated1 !== undefined && openClose !== undefined && selectedChat !== undefined) {
                   timeUpdated1(selectedChat, response.data.link)
                 }
               }
@@ -70,10 +70,12 @@ const SPChatInfo = ({ openClose, selectedChat, userInfo, timeUpdated1 }) => {
     }
   }
 
+  console.log(width)
+
   return (
     <ThemeProvider theme={theme}>
       {selectedChat &&
-        <SPChat>
+        <SPChat widths={width}>
           <Scrollbars>
             <div className='sp-chatinfo'>
               <div className='hover-item close' onClick={() => openClose(false)}>
@@ -137,7 +139,7 @@ const SPChat = styled.div`
   }
 
   color: white;
-  width: 40%;
+  width: ${props => props.widths !== undefined ? '100%' : '40%'};
   height: 100%;
   background-color: black;
 
