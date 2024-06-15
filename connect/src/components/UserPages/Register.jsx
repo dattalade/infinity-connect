@@ -107,7 +107,7 @@ const Login = () => {
               <input name='repassword' value={newUser.repassword} type='password' onChange={handleChange} placeholder='Re-Enter Password' required />
               {button ?
                 <button onClick={saveUser} type='submit'><h3>Connect</h3></button> :
-                <button disabled={button}><h3>Loading...</h3></button>
+                <button style={{cursor: "auto"}} disabled={button}><h3>Loading...</h3></button>
               }
             </form>
             <div className='need'>
