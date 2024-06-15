@@ -64,8 +64,8 @@ const Login = () => {
               fontFamily: "'Josefin Sans', sans-serif",
             },
           });
-          setButton(true);
         }
+        setButton(true);
       })
       .catch((err) => {
         toast.error(`Please refresh and try again`, {
@@ -107,7 +107,7 @@ const Login = () => {
               <input name='repassword' value={newUser.repassword} type='password' onChange={handleChange} placeholder='Re-Enter Password' required />
               {button ?
                 <button onClick={saveUser} type='submit'><h3>Connect</h3></button> :
-                <></>
+                <button disabled={button}><h3>Loading...</h3></button>
               }
             </form>
             <div className='need'>
