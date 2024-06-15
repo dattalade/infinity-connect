@@ -20,6 +20,7 @@ const Login = () => {
       repassword: '',
     })
   const nav = useNavigate();
+  const [button, setButton] = useState(true);
 
   useEffect(() => {
     if (cookies.get('token') !== undefined)
@@ -33,6 +34,7 @@ const Login = () => {
 
   const saveUser = (e) => {
     e.preventDefault();
+    setButton(!button);
     axios.post('https://infinity-connect.onrender.com/add-user', newUser)
       .then((response) => {
         if (response.data.status !== 'ok') {
@@ -62,6 +64,7 @@ const Login = () => {
               fontFamily: "'Josefin Sans', sans-serif",
             },
           });
+          setButton(true);
         }
       })
       .catch((err) => {
@@ -77,6 +80,7 @@ const Login = () => {
             fontFamily: "'Josefin Sans', sans-serif",
           },
         });
+        setButton(true);
       })
   }
   if (cookies.get('token') !== undefined) {
@@ -101,7 +105,10 @@ const Login = () => {
               <input name='email' value={newUser.email} type='email' onChange={handleChange} placeholder='Email' required />
               <input name='password' value={newUser.password} type='password' onChange={handleChange} placeholder='Password' required />
               <input name='repassword' value={newUser.repassword} type='password' onChange={handleChange} placeholder='Re-Enter Password' required />
-              <button onClick={saveUser} type='submit'><h3>Connect</h3></button>
+              {button ?
+                <button onClick={saveUser} type='submit'><h3>Connect</h3></button> :
+                <></>
+              }
             </form>
             <div className='need'>
               <span style={{ color: "white" }}>Already have an account&nbsp;</span>
